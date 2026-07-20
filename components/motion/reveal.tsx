@@ -6,6 +6,9 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// Mobile browsers fire resize when the address bar collapses; a full
+// ScrollTrigger refresh mid-scroll makes reveals jump. Ignore those.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 /**
  * Scroll-driven cinematics. Four vocabularies, all opt-in via data attributes:

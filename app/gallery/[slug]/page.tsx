@@ -85,7 +85,11 @@ export default async function ArtworkPage({
                     src={detail.src}
                     alt={detail.alt}
                     fill
-                    sizes="(min-width: 1024px) 27vw, 50vw"
+                    sizes={
+                      artwork.details.length === 3 && i === 0
+                        ? "(min-width: 1024px) 55vw, 100vw"
+                        : "(min-width: 1024px) 27vw, 50vw"
+                    }
                     className="object-cover"
                   />
                 </div>

@@ -99,6 +99,15 @@ h3 {
   border-color: var(--color-stone);
 }
 
+/* Swipe strips: keep scrollability, lose the scrollbar chrome */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Reveal elements start hidden only when JS + motion are allowed.
    The `.gsap-ready` class is added by the reveal provider, so content
    is never invisible for no-JS or reduced-motion visitors. */

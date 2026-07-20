@@ -26,7 +26,7 @@ export function GalleryGrid({ availableOnly = false }: { availableOnly?: boolean
             onClick={() => setFilter(m.value)}
             aria-pressed={filter === m.value}
             className={cn(
-              "border-b pb-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300",
+              "border-b py-2 text-[0.75rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300",
               filter === m.value
                 ? "border-ink text-ink"
                 : "border-transparent text-graphite/70 hover:text-ink"

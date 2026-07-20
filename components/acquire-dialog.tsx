@@ -44,7 +44,7 @@ export function AcquireDialog({ artwork }: { artwork: Artwork }) {
       </DialogTrigger>
       <DialogContent>
         {/* Step indicator */}
-        <div className="mb-8 flex items-center gap-3" aria-hidden>
+        <div className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-2" aria-hidden>
           {steps.map((label, i) => (
             <div key={label} className="flex items-center gap-3">
               <span

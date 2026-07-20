@@ -56,7 +56,7 @@ export function CommissionForm() {
               id="com-category"
               required
               defaultValue=""
-              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-[0.9375rem] text-ink transition-colors duration-300 focus:border-ink focus:outline-none"
+              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 focus:border-ink focus:outline-none sm:text-[0.9375rem]"
             >
               <option value="" disabled>
                 Select a category
@@ -79,7 +79,7 @@ export function CommissionForm() {
               id="com-budget"
               required
               defaultValue=""
-              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-[0.9375rem] text-ink transition-colors duration-300 focus:border-ink focus:outline-none"
+              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 focus:border-ink focus:outline-none sm:text-[0.9375rem]"
             >
               <option value="" disabled>
                 Select a range

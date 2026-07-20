@@ -58,7 +58,7 @@ export function CollectionStrip({ artworks }: { artworks: Artwork[] }) {
     >
       <div
         ref={trackRef}
-        className="flex snap-x snap-mandatory items-stretch gap-6 overflow-x-auto px-5 pb-4 sm:px-8 lg:snap-none lg:gap-10 lg:overflow-visible lg:px-0 lg:pb-0"
+        className="no-scrollbar flex snap-x snap-proximity items-stretch gap-6 overflow-x-auto px-5 pb-4 sm:px-8 lg:snap-none lg:gap-10 lg:overflow-visible lg:px-0 lg:pb-0"
       >
         {/* Intro panel */}
         <div className="flex w-[78vw] shrink-0 snap-start flex-col justify-center sm:w-[50vw] lg:w-[38vw] lg:pl-24">
