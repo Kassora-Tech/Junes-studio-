@@ -55,7 +55,7 @@ export default async function ArtworkPage({
         <div className="mt-8 grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-20">
           {/* Images */}
           <div className="space-y-4 sm:space-y-6">
-            <div className="artwork-frame relative aspect-[4/5]">
+            <div className="artwork-frame relative aspect-[4/5]" data-reveal-image>
               <Image
                 src={artwork.image.src}
                 alt={artwork.image.alt}
@@ -72,7 +72,15 @@ export default async function ArtworkPage({
             </div>
             <div className="grid grid-cols-2 gap-4 sm:gap-6">
               {artwork.details.map((detail, i) => (
-                <div key={i} className="artwork-frame relative aspect-square">
+                <div
+                  key={i}
+                  className={
+                    artwork.details.length === 3 && i === 0
+                      ? "artwork-frame relative col-span-2 aspect-[16/9]"
+                      : "artwork-frame relative aspect-square"
+                  }
+                  data-reveal-image
+                >
                   <Image
                     src={detail.src}
                     alt={detail.alt}

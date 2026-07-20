@@ -33,7 +33,16 @@ function PinterestIcon() {
 
 export function SiteFooter() {
   return (
-    <footer className="bg-ink text-paper">
+    <footer className="overflow-hidden bg-ink text-paper">
+      {/* Oversized wordmark — a quiet signature across the footer */}
+      <div className="mx-auto max-w-7xl px-5 pt-16 sm:px-8 sm:pt-20" aria-hidden>
+        <p
+          className="select-none whitespace-nowrap font-display text-[13.5vw] leading-none tracking-tight text-paper/10 lg:text-[11rem]"
+          data-reveal
+        >
+          June’s Studio
+        </p>
+      </div>
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="grid gap-14 lg:grid-cols-[1.2fr_1fr_1.2fr]">
           <div>

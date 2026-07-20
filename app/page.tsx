@@ -12,10 +12,11 @@ import { Hero } from "@/components/hero";
 import { Section, SectionHeading, Eyebrow } from "@/components/section";
 import { ArtworkCard } from "@/components/artwork-card";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { CollectionStrip } from "@/components/collection-strip";
 
 export default function HomePage() {
   const hero = artworks.find((a) => a.slug === "stillness-in-white") ?? artworks[0];
-  const featured = featuredArtworks.filter((a) => a.slug !== hero.slug).slice(0, 5);
+  const featured = featuredArtworks.filter((a) => a.slug !== hero.slug).slice(0, 6);
 
   return (
     <>
@@ -49,7 +50,7 @@ export default function HomePage() {
       {/* Artist introduction */}
       <Section tone="ivory">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <div className="relative aspect-[4/5] overflow-hidden" data-reveal>
+          <div className="relative aspect-[4/5]" data-reveal-image>
             <Image
               src={site.aboutImages.portrait.src}
               alt={site.aboutImages.portrait.alt}
@@ -87,61 +88,44 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Latest collection strip */}
-      <Section>
-        <SectionHeading eyebrow="Latest Collection" title="Recent works, hung in order" />
-        <div
-          className="mt-14 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4"
-          data-reveal-group
-        >
-          {latestArtworks.map((artwork) => (
-            <Link
-              key={artwork.slug}
-              href={`/gallery/${artwork.slug}`}
-              className="artwork-card group block"
-              data-reveal
-            >
-              <div className="artwork-frame relative aspect-[3/4]">
-                <Image
-                  src={artwork.image.src}
-                  alt={artwork.image.alt}
-                  fill
-                  sizes="(min-width: 1024px) 22vw, 45vw"
-                  className="object-cover"
-                />
-              </div>
-              <p className="mt-3 font-display text-base leading-snug text-ink">
-                {artwork.title}
-              </p>
-              <p className="mt-0.5 text-xs text-graphite">{artwork.year}</p>
-            </Link>
-          ))}
-        </div>
-      </Section>
+      {/* Latest collection — pinned horizontal gallery walk */}
+      <CollectionStrip artworks={latestArtworks} />
 
-      {/* Commission teaser */}
-      <Section tone="ink" className="text-center">
-        <div className="mx-auto max-w-2xl" data-reveal-group>
-          <div data-reveal>
-            <Eyebrow className="!text-stone">Commissions</Eyebrow>
-          </div>
-          <h2 className="mt-4 text-3xl leading-[1.15] sm:text-4xl lg:text-[2.75rem]" data-reveal>
-            The most important drawings are the ones that don’t exist yet.
-          </h2>
-          <p className="mt-6 text-[0.9375rem] leading-relaxed text-stone" data-reveal>
-            Portraits, wildlife, companions, places that matter. A limited
-            number of commissions are taken each season.
-          </p>
-          <div data-reveal>
-            <Link
-              href="/commissions"
-              className="mt-10 inline-flex items-center border border-paper/70 px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
-            >
-              Begin a Commission
-            </Link>
+      {/* Commission teaser — full-bleed parallax interior */}
+      <section className="relative overflow-hidden py-32 text-paper sm:py-44">
+        <div className="absolute -inset-y-[12%] inset-x-0" data-parallax="10">
+          <Image
+            src={site.aboutImages.interior.src}
+            alt={site.aboutImages.interior.alt}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-ink/70" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-5 text-center sm:px-8">
+          <div className="mx-auto max-w-2xl" data-reveal-group>
+            <div data-reveal>
+              <Eyebrow className="!text-stone">Commissions</Eyebrow>
+            </div>
+            <h2 className="mt-4 text-3xl leading-[1.15] sm:text-4xl lg:text-[2.75rem]" data-reveal>
+              The most important drawings are the ones that don’t exist yet.
+            </h2>
+            <p className="mt-6 text-[0.9375rem] leading-relaxed text-stone" data-reveal>
+              Portraits, wildlife, companions, places that matter. A limited
+              number of commissions are taken each season.
+            </p>
+            <div data-reveal>
+              <Link
+                href="/commissions"
+                className="mt-10 inline-flex items-center border border-paper/70 px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
+              >
+                Begin a Commission
+              </Link>
+            </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* Testimonials */}
       <Section tone="ivory">

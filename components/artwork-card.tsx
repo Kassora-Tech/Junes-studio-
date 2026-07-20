@@ -8,11 +8,13 @@ export function ArtworkCard({
   artwork,
   priority = false,
   reveal = false,
+  index,
   sizes = "(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw",
 }: {
   artwork: Artwork;
   priority?: boolean;
   reveal?: boolean;
+  index?: number;
   sizes?: string;
 }) {
   return (
@@ -47,6 +49,11 @@ export function ArtworkCard({
         {/* Static caption (always visible on touch / mobile) */}
         <div className="mt-4 flex items-baseline justify-between gap-4 sm:group-hover:opacity-60 sm:transition-opacity sm:duration-500">
           <div>
+            {index !== undefined && (
+              <p className="mb-1 text-[0.625rem] tracking-[0.22em] text-graphite/60">
+                {String(index + 1).padStart(2, "0")}
+              </p>
+            )}
             <p className="font-display text-lg leading-snug text-ink">
               {artwork.title}
             </p>

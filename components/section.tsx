@@ -23,12 +23,18 @@ export function SectionHeading({
         align === "center" && "mx-auto text-center",
         className
       )}
-      data-reveal
     >
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 className="mt-4 text-3xl leading-[1.12] sm:text-4xl lg:text-[2.75rem]">
-        {title}
-      </h2>
+      <div data-reveal>
+        <Eyebrow>{eyebrow}</Eyebrow>
+      </div>
+      <div className="overflow-hidden">
+        <h2
+          className="mt-4 text-3xl leading-[1.12] sm:text-4xl lg:text-[2.75rem]"
+          data-mask
+        >
+          {title}
+        </h2>
+      </div>
     </div>
   );
 }

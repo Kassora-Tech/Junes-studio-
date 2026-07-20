@@ -39,7 +39,7 @@ export function GalleryGrid({ availableOnly = false }: { availableOnly?: boolean
 
       <motion.div layout className="mt-12 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
-          {shown.map((artwork) => (
+          {shown.map((artwork, i) => (
             <motion.div
               key={artwork.slug}
               layout
@@ -48,7 +48,7 @@ export function GalleryGrid({ availableOnly = false }: { availableOnly?: boolean
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
-              <ArtworkCard artwork={artwork} />
+              <ArtworkCard artwork={artwork} index={i} />
             </motion.div>
           ))}
         </AnimatePresence>

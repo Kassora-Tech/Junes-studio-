@@ -26,7 +26,7 @@ export default function AboutPage() {
       {/* Editorial alternating layout */}
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="relative aspect-[4/5] overflow-hidden" data-reveal>
+          <div className="relative aspect-[4/5]" data-reveal-image>
             <Image
               src={site.aboutImages.portrait.src}
               alt={site.aboutImages.portrait.alt}
@@ -78,7 +78,7 @@ export default function AboutPage() {
               monochrome artist can have.
             </p>
           </div>
-          <div className="relative aspect-[4/5] overflow-hidden lg:order-2" data-reveal>
+          <div className="relative aspect-[4/5] lg:order-2" data-reveal-image>
             <Image
               src={site.aboutImages.hands.src}
               alt={site.aboutImages.hands.alt}
@@ -90,20 +90,22 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Full-bleed studio image */}
-      <div className="relative h-[60vh] min-h-[400px]" data-reveal>
-        <Image
-          src={site.aboutImages.studioWide.src}
-          alt={site.aboutImages.studioWide.alt}
-          fill
-          sizes="100vw"
-          className="object-cover"
-        />
+      {/* Full-bleed studio image with slow parallax drift */}
+      <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
+        <div className="absolute -inset-y-[12%] inset-x-0" data-parallax="10">
+          <Image
+            src={site.aboutImages.studioWide.src}
+            alt={site.aboutImages.studioWide.alt}
+            fill
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
       </div>
 
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="relative aspect-square overflow-hidden" data-reveal>
+          <div className="relative aspect-square" data-reveal-image>
             <Image
               src={site.aboutImages.tools.src}
               alt={site.aboutImages.tools.alt}

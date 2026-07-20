@@ -80,6 +80,59 @@ const u = (id: string, mono = false) =>
 /* Artworks                                                            */
 /* ------------------------------------------------------------------ */
 
+// Shared close-up/texture shots, reused across pieces the way a real studio
+// photographs surface details. TODO: replace with client photos.
+const tex = {
+  chalkDust: {
+    src: u("photo-1544967082-d9d25d867d66", true),
+    alt: "Close-up of chalk texture and layered strokes on a dark surface",
+  },
+  paperEdge: {
+    src: u("photo-1517646287270-a5a9ca602e5c", true),
+    alt: "Detail of the drawing's edge showing raw surface and fine dust",
+  },
+  graphiteMacro: {
+    src: u("photo-1519999482648-25049ddd37b1", true),
+    alt: "Macro detail of fine graphite linework catching the light",
+  },
+  charcoalBlend: {
+    src: u("photo-1518998053901-5348d3961a04", true),
+    alt: "Close-up of charcoal shading and blended tone on cotton paper",
+  },
+  inkBrush: {
+    src: u("photo-1455390582262-044cdead277a", true),
+    alt: "An ink pen resting mid-stroke on handwritten linework",
+  },
+  pencilHatch: {
+    src: u("photo-1526304640581-d334cdbbf45e", true),
+    alt: "Detail of pencil hatching and soft graphite gradients",
+  },
+  softLight: {
+    src: u("photo-1494059980473-813e73ee784b", true),
+    alt: "Soft window light falling across a blended monochrome surface",
+  },
+  deskTools: {
+    src: u("photo-1513364776144-60967b0f800f", true),
+    alt: "Chalks, charcoal sticks and pencils laid out on the studio table",
+  },
+  inkPooling: {
+    src: u("photo-1515462277126-2dd0c162007a", true),
+    alt: "Detail of ink pooling and dry-brush texture on cold-press paper",
+  },
+  sketchTable: {
+    src: u("photo-1452802447250-470a88ac82bc", true),
+    alt: "A drawing in progress on the studio drafting table",
+  },
+  framedWork: {
+    src: u("photo-1513519245088-0e12902e5a38", true),
+    alt: "The finished work framed and hung on a pale gallery wall",
+  },
+  studioEasel: {
+    src: u("photo-1502920917128-1aa500764cbd", true),
+    alt: "Evening light in the studio, the easel silhouetted against the window",
+  },
+};
+
 export const artworks: Artwork[] = [
   {
     _type: "artwork",
@@ -99,18 +152,7 @@ export const artworks: Artwork[] = [
       src: u("photo-1519681393784-d120267933ba"),
       alt: "White chalk drawing of a moonlit mountain ridge emerging from a black canvas",
     },
-    details: [
-      // TODO: replace with client photo
-      {
-        src: u("photo-1544967082-d9d25d867d66", true),
-        alt: "Close-up of chalk texture and layered strokes on dark canvas",
-      },
-      // TODO: replace with client photo
-      {
-        src: u("photo-1517646287270-a5a9ca602e5c", true),
-        alt: "Detail of the drawing's edge showing raw canvas and fine chalk dust",
-      },
-    ],
+    details: [tex.chalkDust, tex.paperEdge, tex.framedWork],
   },
   {
     _type: "artwork",
@@ -133,10 +175,32 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1518998053901-5348d3961a04", true),
-        alt: "Close-up of charcoal shading and blended tone on cotton paper",
+        src: u("photo-1534773728080-33d31da27ae5", true),
+        alt: "Study detail of the mare's head and mane in soft charcoal",
       },
+      tex.charcoalBlend,
+      tex.softLight,
     ],
+  },
+  {
+    _type: "artwork",
+    slug: "the-elder",
+    title: "The Elder",
+    medium: "charcoal",
+    mediumLabel: "Charcoal and chalk on toned paper",
+    dimensions: "90 × 120 cm",
+    year: 2026,
+    price: 5600,
+    available: true,
+    featured: true,
+    description:
+      "A silverback at rest, drawn over two months from footage filmed by a primatologist friend. The face took a week; the expression took the rest. I have never drawn anything that looked back at me quite like this.",
+    // TODO: replace with client photo
+    image: {
+      src: u("photo-1517021897933-0e0319cfbc28", true),
+      alt: "Charcoal portrait of a silverback gorilla's face in deep contemplative shadow",
+    },
+    details: [tex.charcoalBlend, tex.chalkDust, tex.studioEasel],
   },
   {
     _type: "artwork",
@@ -156,13 +220,27 @@ export const artworks: Artwork[] = [
       src: u("photo-1546182990-dffeafbe841d", true),
       alt: "Highly detailed graphite portrait of a lion's face in monochrome",
     },
-    details: [
-      // TODO: replace with client photo
-      {
-        src: u("photo-1519999482648-25049ddd37b1", true),
-        alt: "Macro detail of fine graphite linework around the lion's eye",
-      },
-    ],
+    details: [tex.graphiteMacro, tex.pencilHatch, tex.sketchTable],
+  },
+  {
+    _type: "artwork",
+    slug: "leopard-resting",
+    title: "Leopard, Resting",
+    medium: "graphite",
+    mediumLabel: "Graphite and carbon pencil on Bristol board",
+    dimensions: "55 × 75 cm",
+    year: 2025,
+    price: 2900,
+    available: true,
+    featured: false,
+    description:
+      "Rosettes are a drawing lesson in themselves: no two alike, every one describing the muscle underneath. Drawn with carbon pencil for the deepest blacks graphite alone can't reach.",
+    // TODO: replace with client photo
+    image: {
+      src: u("photo-1456926631375-92c8ce872def", true),
+      alt: "Graphite drawing of a leopard resting on a branch, spotted coat in monochrome",
+    },
+    details: [tex.graphiteMacro, tex.sketchTable, tex.softLight],
   },
   {
     _type: "artwork",
@@ -182,13 +260,27 @@ export const artworks: Artwork[] = [
       src: u("photo-1474511320723-9a56873867b5", true),
       alt: "Pencil study of a fox with alert ears, drawn in fine monochrome detail",
     },
-    details: [
-      // TODO: replace with client photo
-      {
-        src: u("photo-1526304640581-d334cdbbf45e", true),
-        alt: "Detail of pencil hatching and soft graphite gradients in the fox's fur",
-      },
-    ],
+    details: [tex.pencilHatch, tex.graphiteMacro, tex.deskTools],
+  },
+  {
+    _type: "artwork",
+    slug: "the-owl",
+    title: "The Owl",
+    medium: "pencil",
+    mediumLabel: "Pencil and white chalk on grey paper",
+    dimensions: "45 × 60 cm",
+    year: 2024,
+    price: 1800,
+    available: true,
+    featured: false,
+    description:
+      "A barn owl drawn on mid-grey paper — pencil for the shadow side, chalk for the moonlit one. Owls are mostly silence with a face; the drawing tries to keep it that way.",
+    // TODO: replace with client photo
+    image: {
+      src: u("photo-1543549790-8b5f4a028cfb", true),
+      alt: "Pencil and chalk drawing of a barn owl's pale face against dark plumage",
+    },
+    details: [tex.pencilHatch, tex.chalkDust, tex.paperEdge],
   },
   {
     _type: "artwork",
@@ -211,9 +303,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1494059980473-813e73ee784b", true),
-        alt: "Close-up of blended charcoal tone with white chalk highlights",
+        src: u("photo-1552053831-71594a27632d", true),
+        alt: "Study of the labrador's head tilted in soft light, in blended charcoal",
       },
+      tex.charcoalBlend,
+      tex.softLight,
     ],
   },
   {
@@ -234,13 +328,27 @@ export const artworks: Artwork[] = [
       src: u("photo-1502323777036-f29e3972d82f", true),
       alt: "Minimal ink portrait of a woman in profile, rendered in confident dark strokes",
     },
-    details: [
-      // TODO: replace with client photo
-      {
-        src: u("photo-1515462277126-2dd0c162007a", true),
-        alt: "Detail of ink pooling and dry-brush texture on cold-press paper",
-      },
-    ],
+    details: [tex.inkBrush, tex.inkPooling, tex.softLight],
+  },
+  {
+    _type: "artwork",
+    slug: "swan",
+    title: "Swan",
+    medium: "ink",
+    mediumLabel: "Sumi ink and wash on washi paper",
+    dimensions: "50 × 70 cm",
+    year: 2025,
+    price: 2400,
+    available: true,
+    featured: false,
+    description:
+      "White subject, black medium — a swan in ink is drawn entirely by what you leave out. The bird is untouched paper; everything else is night and water.",
+    // TODO: replace with client photo
+    image: {
+      src: u("photo-1516541196182-6bdb0516ed27", true),
+      alt: "Ink wash drawing of a white swan gliding on dark water",
+    },
+    details: [tex.inkPooling, tex.inkBrush, tex.paperEdge],
   },
   {
     _type: "artwork",
@@ -263,9 +371,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1544967082-d9d25d867d66", true),
-        alt: "Close-up of smudged willow charcoal texture",
+        src: u("photo-1477322524744-0eece9e79640", true),
+        alt: "Detail of the field's furrows rendered in sweeping charcoal strokes",
       },
+      tex.charcoalBlend,
+      tex.chalkDust,
     ],
   },
   {
@@ -289,9 +399,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1517646287270-a5a9ca602e5c", true),
-        alt: "Detail of soft chalk gradients where light meets dark canvas",
+        src: u("photo-1505142468610-359e7d316be0", true),
+        alt: "Detail of the water's surface built from horizontal chalk strokes",
       },
+      tex.chalkDust,
+      tex.paperEdge,
     ],
   },
   {
@@ -315,9 +427,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1544967082-d9d25d867d66", true),
-        alt: "Close-up of dense chalk buildup along the ridgeline",
+        src: u("photo-1526566661780-1a67ea3c863e", true),
+        alt: "Detail of fog rolling through the ridgeline in layered chalk",
       },
+      tex.chalkDust,
+      tex.framedWork,
     ],
   },
   {
@@ -341,9 +455,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1515462277126-2dd0c162007a", true),
-        alt: "Detail of ink bleed into washi paper fibres",
+        src: u("photo-1507041957456-9c397ce39c97", true),
+        alt: "Detail of bare birch branches drawn in fine ink line",
       },
+      tex.inkPooling,
+      tex.inkBrush,
     ],
   },
   {
@@ -367,9 +483,11 @@ export const artworks: Artwork[] = [
     details: [
       // TODO: replace with client photo
       {
-        src: u("photo-1526304640581-d334cdbbf45e", true),
-        alt: "Detail of pencil strokes and chalk snow texture",
+        src: u("photo-1418065460487-3e41a6c84dc5", true),
+        alt: "Detail of snow-laden branches surrounding the bear, in pencil and chalk",
       },
+      tex.pencilHatch,
+      tex.chalkDust,
     ],
   },
   {
@@ -390,20 +508,14 @@ export const artworks: Artwork[] = [
       src: u("photo-1557008075-7f2c5efa4cfd", true),
       alt: "Graphite study of a tiger walking through shallow water, in rich monochrome",
     },
-    details: [
-      // TODO: replace with client photo
-      {
-        src: u("photo-1519999482648-25049ddd37b1", true),
-        alt: "Macro of layered graphite stripes and reflected light",
-      },
-    ],
+    details: [tex.graphiteMacro, tex.pencilHatch, tex.framedWork],
   },
 ];
 
 export const featuredArtworks = artworks.filter((a) => a.featured);
 export const latestArtworks = [...artworks]
   .sort((a, b) => b.year - a.year)
-  .slice(0, 4);
+  .slice(0, 6);
 
 export function getArtwork(slug: string): Artwork | undefined {
   return artworks.find((a) => a.slug === slug);
@@ -603,8 +715,8 @@ export const commissionCategories: CommissionCategory[] = [
     startingPrice: "from €2,200",
     // TODO: replace with client photo
     image: {
-      src: u("photo-1546182990-dffeafbe841d", true),
-      alt: "Charcoal-toned study of a lion's face, a wildlife commission example",
+      src: u("photo-1564760055775-d63b17a55c44", true),
+      alt: "A leopard's face in dramatic monochrome light, a wildlife commission example",
     },
   },
   {
@@ -616,8 +728,8 @@ export const commissionCategories: CommissionCategory[] = [
     startingPrice: "from €1,400",
     // TODO: replace with client photo
     image: {
-      src: u("photo-1518020382113-a7e8fc38eac9", true),
-      alt: "Soft monochrome photograph of a dog resting its head, a pet portrait example",
+      src: u("photo-1552053831-71594a27632d", true),
+      alt: "Soft monochrome photograph of a young retriever tilting its head, a pet portrait example",
     },
   },
   {
@@ -629,8 +741,8 @@ export const commissionCategories: CommissionCategory[] = [
     startingPrice: "priced on consultation",
     // TODO: replace with client photo
     image: {
-      src: u("photo-1447752875215-b2761acb3c5d", true),
-      alt: "Moody monochrome landscape of a field and treeline, a custom commission example",
+      src: u("photo-1526566661780-1a67ea3c863e", true),
+      alt: "Fog rolling over a dark mountain ridge, a custom commission example",
     },
   },
 ];
@@ -712,8 +824,8 @@ export const instagramPosts: ArtworkImage[] = [
     alt: "Hands sketching in a notebook beside a cup of coffee, studio morning",
   },
   {
-    src: u("photo-1452802447250-470a88ac82bc", true),
-    alt: "A pencil drawing in progress on a drafting table",
+    src: u("photo-1455390582262-044cdead277a", true),
+    alt: "An ink pen mid-stroke across a page of studies",
   },
   {
     src: u("photo-1544967082-d9d25d867d66", true),
@@ -728,8 +840,8 @@ export const instagramPosts: ArtworkImage[] = [
     alt: "Evening light in the studio, easel silhouetted against the window",
   },
   {
-    src: u("photo-1494438639946-1ebd1d20bf85", true),
-    alt: "Stacked sketchbooks and loose charcoal studies on a table",
+    src: u("photo-1461301214746-1e109215d6d3", true),
+    alt: "Brushes and drawing tools gathered in jars by the studio window",
   },
 ];
 

@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/motion/smooth-scroll";
 import { RevealManager } from "@/components/motion/reveal";
+import { GalleryCursor } from "@/components/motion/gallery-cursor";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { site } from "@/lib/data";
@@ -44,6 +45,7 @@ export default function RootLayout({
           <main id="content">{children}</main>
           <SiteFooter />
           <RevealManager />
+          <GalleryCursor />
         </SmoothScroll>
       </body>
     </html>

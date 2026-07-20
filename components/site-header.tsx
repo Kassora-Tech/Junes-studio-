@@ -19,9 +19,19 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // Cinematic chrome: recede when reading down, return on the first
+      // upward gesture.
+      if (y > 400 && y > lastY + 6) setHidden(true);
+      else if (y < lastY - 6 || y <= 400) setHidden(false);
+      lastY = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -39,10 +49,11 @@ export function SiteHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,border-color] duration-500",
+        "fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,border-color,transform] duration-500",
         scrolled || open
           ? "border-b border-stone/60 bg-paper/90 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+          : "border-b border-transparent bg-transparent",
+        hidden && !open && "-translate-y-full"
       )}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-8">

@@ -60,7 +60,7 @@ export default async function JournalPostPage({
       </div>
 
       <div className="mx-auto mt-14 max-w-5xl px-5 sm:px-8">
-        <div className="relative aspect-[16/9] overflow-hidden">
+        <div className="relative aspect-[16/9]" data-reveal-image>
           <Image
             src={post.image.src}
             alt={post.image.alt}
