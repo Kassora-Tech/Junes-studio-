@@ -1,23 +1,37 @@
 @import "tailwindcss";
 
-@theme {
-  /* June's Studio palette — light gallery, per brief */
-  --color-ink: #111111;
-  --color-paper: #fafafa;
-  --color-ivory: #f6f4f1;
-  --color-graphite: #3a3a3a;
-  --color-stone: #d7d2cb;
+/* ==========================================================================
+   June's Studio — design system
 
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+   Three colours, no more: true black (the wall), chalk white (the mark),
+   bone-ochre (the light). The bone is never decoration — it is the colour of
+   the gallery spot, and the only places it appears are the light itself and
+   the marks the light leaves: hang lines, sold dots, rules.
+   ========================================================================== */
+
+@theme {
+  --color-void: #0b0b0c; /* the wall */
+  --color-chalk: #f2efe8; /* the mark */
+  --color-bone: #c4a574; /* the light */
+
+  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --tracking-eyebrow: 0.22em;
+  --ease-hang: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --ease-gallery: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Width of the beam cast by the moving light source. */
+  --beam: clamp(20rem, 44vw, 42rem);
 
-  --animate-accordion-down: accordion-down 0.35s var(--ease-gallery);
-  --animate-accordion-up: accordion-up 0.35s var(--ease-gallery);
-  --animate-fade-in: fade-in 0.3s ease-out;
+  /* Wall metrics: centimetres of wall per row, i.e. how much real space a
+     row of works occupies. Works are drawn at true relative scale against
+     this, so a 160cm canvas genuinely dominates a 40cm study. */
+  --row-cm: 118;
+  --wall-gap: 7%;
+
+  --animate-accordion-down: accordion-down 0.4s var(--ease-hang);
+  --animate-accordion-up: accordion-up 0.4s var(--ease-hang);
+  --animate-lift: lift 0.5s var(--ease-hang);
+  --animate-page: page 0.5s ease-out;
 
   @keyframes accordion-down {
     from {
@@ -35,7 +49,17 @@
       height: 0;
     }
   }
-  @keyframes fade-in {
+  @keyframes lift {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes page {
     from {
       opacity: 0;
     }
@@ -45,61 +69,336 @@
   }
 }
 
+@media (min-width: 48rem) {
+  :root {
+    --row-cm: 210;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --row-cm: 340;
+  }
+}
+
+/* Paper tooth. Hand-authored fractal noise, rasterised once and tiled —
+   the grain that the raking light catches. */
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 html {
-  scroll-behavior: auto;
+  background-color: var(--color-void);
+  -webkit-text-size-adjust: 100%;
 }
 
 html.lenis,
 html.lenis body {
   height: auto;
 }
-
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
 
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-void);
+  color: var(--color-chalk);
   font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-::selection {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+/* A whisper of tooth over the whole wall, so nothing is a flat rectangle. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 160px 160px;
+  opacity: 0.035;
 }
 
-/* Elegant serif headings by default */
-h1,
-h2,
-h3 {
+::selection {
+  background-color: var(--color-bone);
+  color: var(--color-void);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-bone);
+  outline-offset: 4px;
+}
+
+/* Everything below is authored inside the components layer so that Tailwind's
+   utilities still win against it. Without this, `.lit { position: relative }`
+   silently beats an `absolute` utility on the same element and collapses it. */
+@layer components {
+
+/* --------------------------------------------------------------------------
+   Typography — real sizes, real tracking, real line-height
+   -------------------------------------------------------------------------- */
+
+.u-display {
   font-family: var(--font-display);
-  font-weight: 340;
+  font-weight: 400;
+  font-size: clamp(2.75rem, 8.6vw, 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+}
+
+.u-h1 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2.125rem, 5vw, 4.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.u-h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.625rem, 3.1vw, 2.875rem);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+}
+
+.u-h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1875rem, 1.7vw, 1.5rem);
+  line-height: 1.22;
+  letter-spacing: -0.012em;
+}
+
+/* Wall label title — italic didone, as on a museum label */
+.u-work {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
   letter-spacing: -0.01em;
 }
 
-/* Utility: tracked-out uppercase section eyebrow */
-.eyebrow {
+.u-lede {
+  font-size: clamp(1.0625rem, 1.3vw, 1.1875rem);
+  line-height: 1.68;
+  letter-spacing: 0.002em;
+  color: color-mix(in srgb, var(--color-chalk) 78%, transparent);
+}
+
+.u-body {
+  font-size: 1rem;
+  line-height: 1.78;
+  letter-spacing: 0.003em;
+  color: color-mix(in srgb, var(--color-chalk) 76%, transparent);
+}
+
+/* Gallery label metadata — small, precise, generous tracking */
+.u-label {
   font-family: var(--font-sans);
   font-size: 0.6875rem;
   font-weight: 500;
-  letter-spacing: var(--tracking-eyebrow);
+  line-height: 1.5;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-graphite);
+  color: color-mix(in srgb, var(--color-chalk) 62%, transparent);
 }
 
-/* Hairline rules that read as gallery matting */
+.u-micro {
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--color-chalk) 68%, transparent);
+}
+
+.u-measure {
+  max-width: 62ch;
+}
+
+/* --------------------------------------------------------------------------
+   The moving light source — the signature interaction.
+
+   A single warm beam follows the pointer (desktop) or sits fixed in the
+   viewport while the wall scrolls past it (touch). Each lit surface clips its
+   own share of the beam, so one light rakes across many works at once.
+   Only transforms change per frame.
+   -------------------------------------------------------------------------- */
+
+.lit {
+  position: relative;
+  overflow: hidden;
+  background-color: #101011;
+  isolation: isolate;
+}
+
+/* The wall is dim; the work is revealed by the light passing over it. */
+.lit__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  /* Enough to sink the work into the wall, not enough to lose an already
+     dark drawing behind it. */
+  background-color: rgba(11, 11, 12, 0.3);
+}
+
+.lit__beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: var(--beam);
+  height: var(--beam);
+  pointer-events: none;
+  transform: translate3d(
+    calc(var(--lx, 32%) - 50%),
+    calc(var(--ly, 22%) - 50%),
+    0
+  );
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 246, 228, 0.4),
+    rgba(233, 208, 167, 0.22) 34%,
+    rgba(196, 165, 116, 0.085) 60%,
+    rgba(196, 165, 116, 0) 78%
+  );
+  will-change: transform;
+}
+
+/* Desktop only: screen-blend the beam for true light, and let it pick up the
+   tooth of the paper as it passes. Neither runs on touch. */
+@media (hover: hover) and (pointer: fine) {
+  .lit__beam {
+    mix-blend-mode: screen;
+  }
+  .lit__beam::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: var(--grain);
+    background-size: 140px 140px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+    -webkit-mask-image: radial-gradient(
+      closest-side,
+      #000,
+      rgba(0, 0, 0, 0.5) 44%,
+      transparent 72%
+    );
+    mask-image: radial-gradient(
+      closest-side,
+      #000,
+      rgba(0, 0, 0, 0.5) 44%,
+      transparent 72%
+    );
+  }
+}
+
+/* --------------------------------------------------------------------------
+   The wall — works hung at true relative scale on a shared eye line
+   -------------------------------------------------------------------------- */
+
+.wall-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; /* the eye line: centres align, not tops */
+  justify-content: center;
+  gap: 3.5rem var(--wall-gap);
+  position: relative;
+}
+
+/* The hang line itself, drawn where a real one would be. */
+.wall-row::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -4vw;
+  right: -4vw;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-bone) 22%, transparent) 12%,
+    color-mix(in srgb, var(--color-bone) 22%, transparent) 88%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+.wall-work {
+  flex: 0 0 auto;
+  /* true scale: width is a real fraction of the wall */
+  width: calc(var(--cm-w) / var(--row-cm) * 100%);
+  min-width: 5.5rem;
+}
+
+.wall-work .lit {
+  aspect-ratio: var(--cm-w) / var(--cm-h);
+}
+
+/* --------------------------------------------------------------------------
+   Reveals — fail open. Content is visible by default; the class only
+   arms the transition once JS confirms it can also disarm it.
+   -------------------------------------------------------------------------- */
+
+.js-reveal [data-lift] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.9s var(--ease-hang),
+    transform 0.9s var(--ease-hang);
+}
+.js-reveal [data-lift].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Components
+   -------------------------------------------------------------------------- */
+
 .rule {
-  border-color: var(--color-stone);
+  border: 0;
+  height: 1px;
+  background-color: color-mix(in srgb, var(--color-chalk) 14%, transparent);
 }
 
-/* Swipe strips: keep scrollability, lose the scrollbar chrome */
+/* Quiet text link with a hairline that draws itself on hover */
+.link-hair {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+.link-hair::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform-origin: left;
+  transform: scaleX(var(--hair, 1));
+  transition: transform 0.5s var(--ease-hang);
+}
+@media (hover: hover) {
+  .link-hair:hover::after {
+    transform-origin: right;
+    animation: hair-redraw 0.6s var(--ease-hang);
+  }
+}
+
+/* The sold dot — a gallery's own convention, in the colour of the light */
+.sold-dot {
+  display: inline-block;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background-color: var(--color-bone);
+  vertical-align: 0.05em;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -108,69 +407,47 @@ h3 {
   display: none;
 }
 
-/* Reveal elements start hidden only when JS + motion are allowed.
-   The `.gsap-ready` class is added by the reveal provider, so content
-   is never invisible for no-JS or reduced-motion visitors. */
-.gsap-ready [data-reveal] {
-  opacity: 0;
-  transform: translateY(14px);
+} /* @layer components */
+
+/* The hairline wipes out to the right and redraws from the left, the way a
+   line is drawn rather than merely turned on. */
+@keyframes hair-redraw {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  49% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  50% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
 }
 
-/* Masked heading reveals — parent must be overflow-hidden */
-.gsap-ready [data-mask] {
-  transform: translateY(112%);
-}
-
-/* Curtain image reveals */
-[data-reveal-image] {
-  overflow: hidden;
-}
-.gsap-ready [data-reveal-image] {
-  clip-path: inset(0 0 100% 0);
-}
-.gsap-ready [data-reveal-image] img {
-  transform: scale(1.14);
-}
-
-/* Gallery cursor — a quiet ink pill that appears over artwork */
-.gallery-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  margin: -36px 0 0 -36px;
-  border-radius: 9999px;
-  background: var(--color-ink);
-  color: var(--color-paper);
-  font-family: var(--font-sans);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  pointer-events: none;
-  transform: scale(0);
-  will-change: transform;
-}
+/* --------------------------------------------------------------------------
+   Reduced motion — the light stops moving, nothing becomes unreachable
+   -------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .gsap-ready [data-reveal],
-  .gsap-ready [data-mask] {
+  .js-reveal [data-lift] {
     opacity: 1;
     transform: none;
+    transition: none;
   }
-  .gsap-ready [data-reveal-image] {
-    clip-path: none;
+  .lit__scrim {
+    background-color: rgba(11, 11, 12, 0.24);
   }
-  .gsap-ready [data-reveal-image] img {
-    transform: none;
+  .lit__beam {
+    transform: translate3d(-14%, -18%, 0);
   }
-  .gallery-cursor {
-    display: none;
+  .link-hair:hover::after {
+    animation: none;
   }
   *,
   *::before,
@@ -178,27 +455,6 @@ h3 {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-}
-
-/* Artwork image hover — subtle scale + shadow lift, per brief */
-.artwork-frame {
-  overflow: hidden;
-  background-color: var(--color-ivory);
-}
-
-.artwork-frame img {
-  transition: transform 0.7s var(--ease-gallery);
-}
-
-@media (hover: hover) {
-  .artwork-card:hover .artwork-frame img {
-    transform: scale(1.025);
-  }
-  .artwork-card:hover .artwork-frame {
-    box-shadow: 0 18px 40px -18px rgba(17, 17, 17, 0.28);
-  }
-  .artwork-frame {
-    transition: box-shadow 0.7s var(--ease-gallery);
+    scroll-behavior: auto !important;
   }
 }
