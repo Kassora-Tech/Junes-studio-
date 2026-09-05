@@ -1,14 +1,19 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "outline" | "ghost";
+/**
+ * Two buttons only.
+ *
+ * `line` is the default everywhere: a hairline that fills with chalk on hover,
+ * matching the rules and label weights used across the wall. `solid` exists
+ * for the single confirming action inside a dialog, where a filled control is
+ * genuinely the clearest thing. Nothing on a page ever shouts.
+ */
+type Variant = "line" | "solid";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-ink text-paper hover:bg-graphite disabled:hover:bg-ink",
-  outline:
-    "border border-ink text-ink hover:bg-ink hover:text-paper disabled:hover:bg-transparent disabled:hover:text-ink",
-  ghost: "text-ink hover:bg-ivory",
+  line: "border border-chalk/25 text-chalk hover:border-chalk hover:bg-chalk hover:text-void",
+  solid: "bg-chalk text-void hover:bg-bone",
 };
 
 export interface ButtonProps
@@ -17,11 +22,11 @@ export interface ButtonProps
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "primary", ...props }, ref) => (
+  ({ className, variant = "line", ...props }, ref) => (
     <button
       ref={ref}
       className={cn(
-        "inline-flex items-center justify-center gap-2 px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-not-allowed disabled:opacity-50",
+        "u-label inline-flex items-center justify-center gap-3 px-7 py-4 !text-current transition-colors duration-400 disabled:cursor-not-allowed disabled:opacity-45",
         variants[variant],
         className
       )}

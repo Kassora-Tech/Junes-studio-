@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import { Wordmark } from "@/components/brand/mark";
+import { Menu } from "@/components/brand/icons";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/gallery", label: "Gallery" },
-  { href: "/originals", label: "Originals" },
+  { href: "/gallery", label: "The Wall" },
+  { href: "/originals", label: "Available" },
   { href: "/commissions", label: "Commissions" },
-  { href: "/about", label: "About" },
+  { href: "/about", label: "The Studio" },
   { href: "/journal", label: "Journal" },
   { href: "/contact", label: "Contact" },
 ];
@@ -18,20 +19,10 @@ const links = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
+  const [sunk, setSunk] = useState(false);
 
   useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      // Cinematic chrome: recede when reading down, return on the first
-      // upward gesture.
-      if (y > 400 && y > lastY + 6) setHidden(true);
-      else if (y < lastY - 6 || y <= 400) setHidden(false);
-      lastY = y;
-    };
+    const onScroll = () => setSunk(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -46,95 +37,79 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-[background-color,box-shadow,border-color,transform] duration-500",
-        scrolled || open
-          ? "border-b border-stone/60 bg-paper/90 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent",
-        hidden && !open && "-translate-y-full"
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
+        // A solid ground rather than a blurred one: backdrop-filter on a fixed
+        // bar is one of the most expensive things you can put on a phone.
+        sunk || open ? "bg-void/95" : "bg-transparent"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-8">
-        <Link
-          href="/"
-          className="font-display text-xl tracking-tight text-ink sm:text-2xl"
-          aria-label="June's Studio — home"
-        >
-          June’s Studio
+      <div className="mx-auto flex h-[4.5rem] max-w-[100rem] items-center justify-between px-6 sm:h-24 sm:px-10">
+        <Link href="/" aria-label="June’s Studio — home" className="text-chalk">
+          <Wordmark />
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={cn(
-                "text-[0.75rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300",
-                pathname.startsWith(link.href)
-                  ? "text-ink"
-                  : "text-graphite hover:text-ink"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-9 lg:flex" aria-label="Primary">
+          {links.map((link) => {
+            const active = pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "u-label transition-colors duration-300 hover:text-chalk",
+                  active && "!text-bone"
+                )}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
+          aria-controls="menu-drawer"
           aria-label={open ? "Close menu" : "Open menu"}
-          className="relative flex h-10 w-10 items-center justify-center lg:hidden"
+          className="-mr-2 flex h-11 w-11 items-center justify-center text-chalk lg:hidden"
         >
-          <span
-            className={cn(
-              "absolute h-px w-6 bg-ink transition-transform duration-300",
-              open ? "rotate-45" : "-translate-y-[4px]"
-            )}
-          />
-          <span
-            className={cn(
-              "absolute h-px w-6 bg-ink transition-transform duration-300",
-              open ? "-rotate-45" : "translate-y-[4px]"
-            )}
-          />
+          <Menu className="h-6 w-6" open={open} />
         </button>
       </div>
 
-      <AnimatePresence>
-        {open && (
-          <motion.nav
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            aria-label="Mobile"
-            className="fixed inset-x-0 top-16 bottom-0 z-40 flex flex-col bg-paper px-5 pt-10 lg:hidden"
-          >
-            {links.map((link, i) => (
-              <motion.div
-                key={link.href}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 + i * 0.05, duration: 0.35, ease: "easeOut" }}
-              >
-                <Link
-                  href={link.href}
-                  className="block border-b border-stone/60 py-5 font-display text-2xl text-ink"
-                >
-                  {link.label}
-                </Link>
-              </motion.div>
-            ))}
-            <p className="mt-auto pb-10 text-xs tracking-[0.18em] uppercase text-graphite">
-              Original drawings · Chalk on black canvas
-            </p>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      <div
+        id="menu-drawer"
+        hidden={!open}
+        className="fixed inset-x-0 bottom-0 top-[4.5rem] z-50 flex flex-col bg-void px-6 pt-8 lg:hidden"
+      >
+        <nav aria-label="Mobile">
+          {links.map((link, i) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{ animationDelay: `${60 + i * 45}ms` }}
+              className="u-h3 block animate-lift border-b border-chalk/10 py-5 text-chalk"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <p className="u-label mt-auto pb-10">
+          White chalk on black canvas · Drawn by hand
+        </p>
+      </div>
     </header>
   );
 }

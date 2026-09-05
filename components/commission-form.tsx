@@ -2,118 +2,113 @@
 
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Input, fieldClass } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Check } from "@/components/brand/icons";
 import { commissionCategories } from "@/lib/data";
 
-/** Mock commission inquiry — demo only. File input shows the chosen filename; nothing uploads. */
+/** Mock enquiry — demonstration only. The file field names the chosen file
+ *  and nothing is uploaded, sent or stored. */
 export function CommissionForm() {
   const [done, setDone] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setDone(true);
-  };
-
   if (done) {
     return (
-      <div className="border border-stone bg-paper p-10 text-center sm:p-14" role="status">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-ink" aria-hidden>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M4 12.5 9.5 18 20 6.5" />
-          </svg>
-        </div>
-        <h3 className="mt-6 font-display text-2xl text-ink">Inquiry received</h3>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-graphite">
-          Thank you — in a live studio, June would reply within two working
-          days to arrange a consultation. This is a demonstration, so nothing
-          has been sent.
+      <div className="border border-chalk/12 p-10 sm:p-14" role="status">
+        <span
+          className="flex h-12 w-12 items-center justify-center border border-bone text-bone"
+          aria-hidden
+        >
+          <Check className="h-5 w-5" />
+        </span>
+        <h3 className="u-h3 mt-8 text-chalk">Your note is with the studio.</h3>
+        <p className="u-body mt-5 max-w-md">
+          In a working studio June would read this herself and write back to
+          arrange a conversation. This is a demonstration, so nothing has
+          been sent.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
-      <div className="grid gap-8 sm:grid-cols-2">
+    <form
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setDone(true);
+      }}
+      className="space-y-9"
+    >
+      <div className="grid gap-9 sm:grid-cols-2">
         <div>
-          <Label htmlFor="com-name">Full name</Label>
-          <Input id="com-name" required placeholder="Your name" autoComplete="name" />
+          <Label htmlFor="com-name">Your name</Label>
+          <Input id="com-name" required autoComplete="name" placeholder="Name" />
         </div>
         <div>
           <Label htmlFor="com-email">Email</Label>
-          <Input id="com-email" type="email" required placeholder="you@example.com" autoComplete="email" />
+          <Input
+            id="com-email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="you@example.com"
+          />
         </div>
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2">
+      <div className="grid gap-9 sm:grid-cols-2">
         <div>
-          <Label htmlFor="com-category">Category</Label>
-          <div className="relative">
-            <select
-              id="com-category"
-              required
-              defaultValue=""
-              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 focus:border-ink focus:outline-none sm:text-[0.9375rem]"
-            >
-              <option value="" disabled>
-                Select a category
+          <Label htmlFor="com-category">Subject</Label>
+          <select id="com-category" required defaultValue="" className={fieldClass}>
+            <option value="" disabled>
+              Choose a subject
+            </option>
+            {commissionCategories.map((c) => (
+              <option key={c.id} value={c.id} className="bg-void">
+                {c.title}
               </option>
-              {commissionCategories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.title}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-graphite" aria-hidden>
-              ↓
-            </span>
-          </div>
+            ))}
+          </select>
         </div>
         <div>
-          <Label htmlFor="com-budget">Budget range</Label>
-          <div className="relative">
-            <select
-              id="com-budget"
-              required
-              defaultValue=""
-              className="w-full appearance-none border-b border-stone bg-transparent px-0 py-3 text-base text-ink transition-colors duration-300 focus:border-ink focus:outline-none sm:text-[0.9375rem]"
-            >
-              <option value="" disabled>
-                Select a range
-              </option>
-              <option>€1,000 – €2,000</option>
-              <option>€2,000 – €4,000</option>
-              <option>€4,000 – €7,000</option>
-              <option>€7,000 +</option>
-            </select>
-            <span className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-graphite" aria-hidden>
-              ↓
-            </span>
-          </div>
+          <Label htmlFor="com-budget">Budget</Label>
+          <select id="com-budget" required defaultValue="" className={fieldClass}>
+            <option value="" disabled>
+              Choose a range
+            </option>
+            {["€1,000 – €2,000", "€2,000 – €4,000", "€4,000 – €7,000", "€7,000 +"].map(
+              (range) => (
+                <option key={range} className="bg-void">
+                  {range}
+                </option>
+              )
+            )}
+          </select>
         </div>
       </div>
 
       <div>
-        <Label htmlFor="com-description">Tell June about the piece</Label>
+        <Label htmlFor="com-description">The piece you have in mind</Label>
         <Textarea
           id="com-description"
           required
           rows={5}
-          placeholder="The subject, the story behind it, rough size, where it will hang…"
+          placeholder="Who or what it is, roughly how big, and where it would hang."
         />
       </div>
 
       <div>
-        <Label htmlFor="com-reference">Reference image (optional)</Label>
+        <Label htmlFor="com-reference">A photograph to work from</Label>
         <label
           htmlFor="com-reference"
-          className="mt-2 flex cursor-pointer items-center justify-between gap-4 border border-dashed border-stone px-5 py-4 text-sm text-graphite transition-colors hover:border-ink"
+          className="u-micro mt-3 flex cursor-pointer items-center justify-between gap-4 border border-dashed border-chalk/20 px-5 py-5 transition-colors hover:border-chalk/60"
         >
-          <span>{fileName ?? "Attach a photograph"}</span>
-          <span className="text-[0.6875rem] uppercase tracking-[0.18em]">Browse</span>
+          <span className={fileName ? "text-chalk" : "text-chalk/60"}>
+            {fileName ?? "Attach an image (optional)"}
+          </span>
+          <span className="u-label">Choose</span>
         </label>
         <input
           id="com-reference"
@@ -125,10 +120,10 @@ export function CommissionForm() {
       </div>
 
       <Button type="submit" className="w-full sm:w-auto">
-        Send Inquiry
+        Send to the studio
       </Button>
-      <p className="text-[0.6875rem] text-graphite/60">
-        Demonstration form — nothing is sent or stored.
+      <p className="u-micro text-chalk/60">
+        A demonstration form. Nothing is sent or stored.
       </p>
     </form>
   );

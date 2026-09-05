@@ -2,97 +2,113 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/data";
-import { Eyebrow, Section } from "@/components/section";
+import { Shell, Section, Eyebrow } from "@/components/section";
+import { Lit } from "@/components/light";
+import { ArrowRight } from "@/components/brand/icons";
 
+/**
+ * PLACEHOLDER BIOGRAPHY.
+ *
+ * The voice and structure here are written to be replaced by June's own
+ * words. Deliberately absent: any claim that could not be checked — no
+ * collection lists, no years-in-practice, no exhibition history, no waiting
+ * list length. Those belong to her to state, not to a demo to invent.
+ */
 export const metadata: Metadata = {
-  title: "About",
+  title: "The Studio",
   description:
-    "The story of June — a fine artist working in white chalk on black canvas, graphite, pencil, charcoal and ink, in a converted grain-store studio.",
+    "How the work is made — white chalk on black canvas, graphite, charcoal and ink, drawn by hand in a north-lit studio.",
 };
 
 export default function AboutPage() {
   return (
-    <div className="pt-32 sm:pt-40">
-      {/* Intro */}
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <div className="max-w-3xl">
-          <Eyebrow>The Artist</Eyebrow>
-          <h1 className="mt-4 text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
-            June draws the way other people keep silence.
+    <div className="pt-40 sm:pt-52">
+      <Shell wide>
+        <div className="max-w-4xl">
+          <Eyebrow data-lift="0">The Studio</Eyebrow>
+          <h1 className="u-h1 mt-6 text-chalk" data-lift="1">
+            She draws the way other people keep silence.
           </h1>
         </div>
-      </div>
+      </Shell>
 
-      {/* Editorial alternating layout */}
       <Section>
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="relative aspect-[4/5]" data-reveal-image>
-            <Image
-              src={site.aboutImages.portrait.src}
-              alt={site.aboutImages.portrait.alt}
-              fill
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="object-cover"
-              priority
-            />
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          <div data-lift="0">
+            <Lit className="aspect-[4/5] w-full">
+              <Image
+                src={site.aboutImages.portrait.src}
+                alt={site.aboutImages.portrait.alt}
+                fill
+                priority
+                sizes="(min-width: 64rem) 44vw, 92vw"
+                className="object-cover"
+              />
+            </Lit>
           </div>
-          <div className="max-w-lg" data-reveal-group>
-            <h2 className="text-3xl leading-[1.15] sm:text-4xl" data-reveal>
-              The beginning
+          <div>
+            <Eyebrow data-lift="1">Reversal</Eyebrow>
+            <h2 className="u-h2 mt-6 text-chalk" data-lift="2">
+              The dark is most of the drawing
             </h2>
-            <p className="mt-6 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              June trained as a printmaker, spent six years illustrating other
-              people’s ideas, and one October evening ran out of white paper.
-              The only surface left in the studio was a scrap of black mounting
-              board and a stick of chalk. The drawing that happened that
-              night — a window, lit from inside — changed the direction of
-              everything that followed.
-            </p>
-            <p className="mt-4 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              Ten years later, white chalk on black canvas remains the centre of
-              the studio’s work, alongside graphite, pencil, charcoal and ink —
-              the quiet mediums, the ones that forgive nothing and therefore
-              mean everything.
-            </p>
+            <div className="u-body u-measure mt-8 space-y-5" data-lift="3">
+              <p>
+                Most drawing begins with darkness added to light — pencil onto
+                white paper, shadow by shadow, until an image arrives. June’s
+                signature work reverses it. The canvas begins as night, and
+                every mark she makes is a mark of light.
+              </p>
+              <p>
+                It sounds like a small technical inversion. It is not. Drawing
+                the light instead of the shadow stops you describing objects
+                and starts you describing how they are seen. A face becomes a
+                cheekbone catching a window, a bright line along a jaw.
+                Everything unnecessary simply stays black.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
 
-      <Section tone="ivory">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="max-w-lg lg:order-1" data-reveal-group>
-            <h2 className="text-3xl leading-[1.15] sm:text-4xl" data-reveal>
-              The process
-            </h2>
-            <p className="mt-6 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              Every piece begins with looking — usually for far longer than the
-              drawing itself takes. Chalk cannot be erased from canvas without
-              leaving a ghost, so each mark is decided before it is made. The
-              large works are drawn standing, at arm’s length, over weeks of
-              slow layering.
-            </p>
-            <p className="mt-4 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              The studio is a converted grain store with a single, enormous
-              north-facing window. North light doesn’t change its mind during
-              the day, which makes it the only honest collaborator a
-              monochrome artist can have.
-            </p>
+      <Section>
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          <div className="lg:order-2" data-lift="0">
+            <Lit className="aspect-[4/5] w-full">
+              <Image
+                src={site.aboutImages.hands.src}
+                alt={site.aboutImages.hands.alt}
+                fill
+                sizes="(min-width: 64rem) 44vw, 92vw"
+                className="object-cover"
+              />
+            </Lit>
           </div>
-          <div className="relative aspect-[4/5] lg:order-2" data-reveal-image>
-            <Image
-              src={site.aboutImages.hands.src}
-              alt={site.aboutImages.hands.alt}
-              fill
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="object-cover"
-            />
+          <div className="lg:order-1">
+            <Eyebrow data-lift="1">Method</Eyebrow>
+            <h2 className="u-h2 mt-6 text-chalk" data-lift="2">
+              Chalk cannot be taken back
+            </h2>
+            <div className="u-body u-measure mt-8 space-y-5" data-lift="3">
+              <p>
+                Every piece begins with looking, usually for far longer than
+                the drawing itself takes. Chalk lifted from canvas leaves a
+                ghost, so each mark has to be decided before it is made. The
+                large works are drawn standing, at arm’s length, in whole-arm
+                movements, over weeks of layering.
+              </p>
+              <p>
+                The studio has one large north-facing window. North light does
+                not change its mind through the day, which makes it the only
+                honest collaborator a monochrome artist can have.
+              </p>
+            </div>
           </div>
         </div>
       </Section>
 
-      {/* Full-bleed studio image with slow parallax drift */}
-      <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-        <div className="absolute -inset-y-[12%] inset-x-0" data-parallax="10">
+      {/* A full-bleed breath, lit like everything else */}
+      <div className="px-6 sm:px-10" data-lift="0">
+        <Lit className="mx-auto h-[62vh] min-h-[22rem] w-full max-w-[100rem]">
           <Image
             src={site.aboutImages.studioWide.src}
             alt={site.aboutImages.studioWide.alt}
@@ -100,48 +116,53 @@ export default function AboutPage() {
             sizes="100vw"
             className="object-cover"
           />
-        </div>
+        </Lit>
       </div>
 
       <Section>
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-          <div className="relative aspect-square" data-reveal-image>
-            <Image
-              src={site.aboutImages.tools.src}
-              alt={site.aboutImages.tools.alt}
-              fill
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="object-cover"
-            />
+        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-24">
+          <div data-lift="0">
+            <Lit className="aspect-square w-full">
+              <Image
+                src={site.aboutImages.tools.src}
+                alt={site.aboutImages.tools.alt}
+                fill
+                sizes="(min-width: 64rem) 44vw, 92vw"
+                className="object-cover"
+              />
+            </Lit>
           </div>
-          <div className="max-w-lg" data-reveal-group>
-            <h2 className="text-3xl leading-[1.15] sm:text-4xl" data-reveal>
-              The work
+          <div>
+            <Eyebrow data-lift="1">What Leaves</Eyebrow>
+            <h2 className="u-h2 mt-6 text-chalk" data-lift="2">
+              One of one, and then it is gone
             </h2>
-            <p className="mt-6 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              The finished pieces live in collections across Ireland, the UK,
-              Europe and North America — reading rooms, hallways, one
-              lighthouse. Commissioned portraits, especially of animals, have
-              become the studio’s most personal work: drawings made for people
-              who understand that time is finite and love is not.
-            </p>
-            <p className="mt-4 text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              Every original leaves the studio framed, certified, and crated by
-              hand. Nothing is rushed. Nothing is printed. Everything is
-              drawn.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4" data-reveal>
+            <div className="u-body u-measure mt-8 space-y-5" data-lift="3">
+              <p>
+                Nothing here is printed and nothing is editioned. Each drawing
+                exists once. When a piece goes it stays on the wall as a
+                record, marked with the gallery’s own dot, because the work
+                that has left is part of the story of the work that remains.
+              </p>
+              <p>
+                Every original is framed where its medium requires it, signed,
+                certified, and crated by hand before it travels.
+              </p>
+            </div>
+            <div className="mt-10 flex flex-wrap gap-8" data-lift="4">
               <Link
                 href="/gallery"
-                className="inline-flex items-center bg-ink px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-graphite"
+                className="u-label link-hair inline-flex items-center gap-2 !text-chalk"
               >
-                View the Collection
+                See the wall
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
               <Link
                 href="/commissions"
-                className="inline-flex items-center border border-ink px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-ink transition-colors duration-300 hover:bg-ink hover:text-paper"
+                className="u-label link-hair inline-flex items-center gap-2 !text-chalk"
               >
-                Commissions
+                Commission a piece
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>

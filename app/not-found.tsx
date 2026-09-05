@@ -1,20 +1,27 @@
 import Link from "next/link";
+import { Shell } from "@/components/section";
+import { ArrowRight } from "@/components/brand/icons";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-5 pt-20 text-center">
-      <p className="eyebrow">Not Found</p>
-      <h1 className="mt-4 text-4xl sm:text-5xl">This wall is empty.</h1>
-      <p className="mt-6 max-w-md text-[0.9375rem] leading-relaxed text-graphite">
-        The page you’re looking for isn’t hanging here. The collection,
-        however, is just through the next room.
-      </p>
-      <Link
-        href="/gallery"
-        className="mt-10 inline-flex items-center bg-ink px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-graphite"
-      >
-        View the Gallery
-      </Link>
+    <div className="flex min-h-[80svh] items-center">
+      <Shell>
+        <p className="u-label">Nothing hung here</p>
+        <h1 className="u-h1 mt-6 max-w-2xl text-chalk">
+          This wall is bare.
+        </h1>
+        <p className="u-body u-measure mt-8">
+          Whatever you were looking for is not on this one. The rest of the
+          work is through the next room.
+        </p>
+        <Link
+          href="/gallery"
+          className="u-label link-hair mt-10 inline-flex items-center gap-2 !text-chalk"
+        >
+          See the wall
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
+      </Shell>
     </div>
   );
 }

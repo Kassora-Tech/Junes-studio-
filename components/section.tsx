@@ -1,63 +1,84 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return <p className={cn("eyebrow", className)}>{children}</p>;
-}
-
-export function SectionHeading({
-  eyebrow,
-  title,
+/** The page gutter. Generous margins are most of what makes a wall read. */
+export function Shell({
+  children,
   className,
-  align = "left",
+  wide = false,
 }: {
-  eyebrow: string;
-  title: string;
+  children: ReactNode;
   className?: string;
-  align?: "left" | "center";
+  wide?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "max-w-2xl",
-        align === "center" && "mx-auto text-center",
+        "mx-auto px-6 sm:px-10",
+        wide ? "max-w-[100rem]" : "max-w-[88rem]",
         className
       )}
     >
-      <div data-reveal>
-        <Eyebrow>{eyebrow}</Eyebrow>
-      </div>
-      <div className="overflow-hidden">
-        <h2
-          className="mt-4 text-3xl leading-[1.12] sm:text-4xl lg:text-[2.75rem]"
-          data-mask
-        >
-          {title}
-        </h2>
-      </div>
+      {children}
     </div>
+  );
+}
+
+/** Spreads the rest of its props so `data-lift` actually reaches the DOM. */
+export function Eyebrow({
+  children,
+  className,
+  ...rest
+}: { children: ReactNode; className?: string } & React.HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p className={cn("u-label", className)} {...rest}>
+      {children}
+    </p>
   );
 }
 
 export function Section({
   children,
   className,
-  tone = "paper",
+  wide = false,
 }: {
   children: ReactNode;
   className?: string;
-  tone?: "paper" | "ivory" | "ink";
+  wide?: boolean;
 }) {
   return (
-    <section
-      className={cn(
-        "py-20 sm:py-28",
-        tone === "ivory" && "bg-ivory",
-        tone === "ink" && "bg-ink text-paper",
-        className
-      )}
-    >
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">{children}</div>
+    <section className={cn("py-24 sm:py-36", className)}>
+      <Shell wide={wide}>{children}</Shell>
     </section>
+  );
+}
+
+/**
+ * A room title. The eyebrow behaves like the small card beside a doorway;
+ * the heading is the room itself.
+ */
+export function RoomTitle({
+  eyebrow,
+  title,
+  children,
+  className,
+}: {
+  eyebrow: string;
+  title: string;
+  children?: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={cn("max-w-3xl", className)}>
+      <Eyebrow data-lift="0">{eyebrow}</Eyebrow>
+      <h2 className="u-h2 mt-6 text-chalk" data-lift="1">
+        {title}
+      </h2>
+      {children && (
+        <div className="u-body u-measure mt-6" data-lift="2">
+          {children}
+        </div>
+      )}
+    </div>
   );
 }

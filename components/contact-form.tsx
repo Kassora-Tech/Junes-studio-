@@ -5,49 +5,68 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Check } from "@/components/brand/icons";
 
-/** Mock contact form — demo only, success state, nothing is sent. */
+/** Mock contact — demonstration only. Success state, nothing sent. */
 export function ContactForm() {
   const [done, setDone] = useState(false);
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setDone(true);
-  };
-
   if (done) {
     return (
-      <div className="border border-stone bg-ivory p-10 text-center" role="status">
-        <h3 className="font-display text-2xl text-ink">Message received</h3>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-graphite">
-          Thank you for writing. In a live studio, June replies within two
-          working days. This is a demonstration, so nothing has been sent.
+      <div className="border border-chalk/12 p-10 sm:p-14" role="status">
+        <span
+          className="flex h-12 w-12 items-center justify-center border border-bone text-bone"
+          aria-hidden
+        >
+          <Check className="h-5 w-5" />
+        </span>
+        <h2 className="u-h3 mt-8 text-chalk">Thank you for writing.</h2>
+        <p className="u-body mt-5 max-w-md">
+          Letters to the studio are answered in the order they arrive. This is
+          a demonstration, so nothing has been sent.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-8">
-      <div className="grid gap-8 sm:grid-cols-2">
+    <form
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setDone(true);
+      }}
+      className="space-y-9"
+    >
+      <div className="grid gap-9 sm:grid-cols-2">
         <div>
-          <Label htmlFor="ct-name">Full name</Label>
-          <Input id="ct-name" required placeholder="Your name" autoComplete="name" />
+          <Label htmlFor="ct-name">Your name</Label>
+          <Input id="ct-name" required autoComplete="name" placeholder="Name" />
         </div>
         <div>
           <Label htmlFor="ct-email">Email</Label>
-          <Input id="ct-email" type="email" required placeholder="you@example.com" autoComplete="email" />
+          <Input
+            id="ct-email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="you@example.com"
+          />
         </div>
       </div>
       <div>
-        <Label htmlFor="ct-message">Message</Label>
-        <Textarea id="ct-message" required rows={6} placeholder="How can the studio help?" />
+        <Label htmlFor="ct-message">Your message</Label>
+        <Textarea
+          id="ct-message"
+          required
+          rows={6}
+          placeholder="A work, a commission, framing, shipping — anything at all."
+        />
       </div>
       <Button type="submit" className="w-full sm:w-auto">
-        Send Message
+        Send
       </Button>
-      <p className="text-[0.6875rem] text-graphite/60">
-        Demonstration form — nothing is sent or stored.
+      <p className="u-micro text-chalk/60">
+        A demonstration form. Nothing is sent or stored.
       </p>
     </form>
   );

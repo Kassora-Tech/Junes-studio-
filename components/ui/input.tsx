@@ -1,17 +1,14 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { cn } from "@/lib/utils";
+
+/** 16px on mobile so iOS never zooms the page when a field takes focus. */
+export const fieldClass =
+  "w-full border-b border-chalk/20 bg-transparent px-0 py-3.5 text-base text-chalk placeholder:text-chalk/55 transition-colors duration-300 focus:border-chalk focus:outline-none focus-visible:outline-none sm:text-[0.9375rem]";
 
 export const Input = React.forwardRef<
   HTMLInputElement,
   React.InputHTMLAttributes<HTMLInputElement>
 >(({ className, ...props }, ref) => (
-  <input
-    ref={ref}
-    className={cn(
-      "w-full border-b border-stone bg-transparent px-0 py-3 text-base text-ink placeholder:text-graphite/50 transition-colors duration-300 focus:border-ink focus:outline-none sm:text-[0.9375rem]",
-      className
-    )}
-    {...props}
-  />
+  <input ref={ref} className={cn(fieldClass, className)} {...props} />
 ));
 Input.displayName = "Input";

@@ -6,6 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Check, ArrowRight } from "@/components/brand/icons";
 import {
   Dialog,
   DialogClose,
@@ -16,148 +17,158 @@ import {
 } from "@/components/ui/dialog";
 
 /**
- * Mock acquisition flow — demo only. Three styled steps ending in a
- * confirmation screen. No payment is processed and nothing is sent.
+ * Acquiring a work.
+ *
+ * Deliberately not a checkout. The trigger is a line of text, not a filled
+ * button; the flow reads as writing to a gallery about a piece you would like
+ * to take home. No payment is processed — this is a demonstration.
  */
 export function AcquireDialog({ artwork }: { artwork: Artwork }) {
   const [step, setStep] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const reset = (o: boolean) => {
-    setOpen(o);
-    if (!o) setTimeout(() => setStep(0), 300);
+  const onOpenChange = (next: boolean) => {
+    setOpen(next);
+    if (!next) window.setTimeout(() => setStep(0), 250);
   };
 
-  const next = (e: FormEvent<HTMLFormElement>) => {
+  const advance = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStep((s) => s + 1);
   };
 
-  const steps = ["Your details", "Delivery", "Confirmation"];
-
   return (
-    <Dialog open={open} onOpenChange={reset}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="w-full sm:w-auto">
-          {artwork.price === null ? "Inquire to Acquire" : "Acquire Artwork"}
-        </Button>
+        <button
+          type="button"
+          className="u-label link-hair inline-flex items-center gap-2 !text-chalk"
+        >
+          {artwork.price === null ? "Enquire about this work" : "Acquire this work"}
+          <ArrowRight className="h-3.5 w-3.5" />
+        </button>
       </DialogTrigger>
+
       <DialogContent>
-        {/* Step indicator */}
-        <div className="mb-8 flex flex-wrap items-center gap-x-3 gap-y-2" aria-hidden>
-          {steps.map((label, i) => (
-            <div key={label} className="flex items-center gap-3">
-              <span
-                className={
-                  i <= step
-                    ? "h-1.5 w-1.5 rounded-full bg-ink"
-                    : "h-1.5 w-1.5 rounded-full bg-stone"
-                }
-              />
-              <span
-                className={
-                  i === step
-                    ? "text-[0.625rem] font-medium uppercase tracking-[0.18em] text-ink"
-                    : "text-[0.625rem] font-medium uppercase tracking-[0.18em] text-graphite/50"
-                }
-              >
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
+        <p className="u-label" aria-hidden>
+          {step === 2 ? "Noted" : `Step ${step + 1} of 2`}
+        </p>
 
         {step === 0 && (
-          <form onSubmit={next}>
-            <DialogTitle className="font-display text-2xl text-ink">
-              Acquire “{artwork.title}”
+          <form onSubmit={advance}>
+            <DialogTitle className="u-work mt-5 text-3xl text-chalk">
+              {artwork.title}
             </DialogTitle>
-            <DialogDescription className="mt-3 text-sm leading-relaxed text-graphite">
-              {artwork.mediumLabel}, {artwork.dimensions} —{" "}
-              {formatPrice(artwork.price)}. Framed, with Certificate of
-              Authenticity, shipped insured worldwide.
+            <DialogDescription className="u-micro mt-3">
+              {artwork.mediumLabel}, {artwork.dimensions} ·{" "}
+              {formatPrice(artwork.price)}. Framed where the medium requires it,
+              with its certificate, shipped insured worldwide.
             </DialogDescription>
-            <div className="mt-8 space-y-6">
+
+            <div className="mt-10 space-y-7">
               <div>
-                <Label htmlFor="acq-name">Full name</Label>
-                <Input id="acq-name" required placeholder="Your name" autoComplete="name" />
+                <Label htmlFor="acq-name">Your name</Label>
+                <Input id="acq-name" required autoComplete="name" placeholder="Name" />
               </div>
               <div>
                 <Label htmlFor="acq-email">Email</Label>
-                <Input id="acq-email" type="email" required placeholder="you@example.com" autoComplete="email" />
+                <Input
+                  id="acq-email"
+                  type="email"
+                  required
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div>
+                <Label htmlFor="acq-where">Where it would hang (optional)</Label>
+                <Input id="acq-where" placeholder="A room, a wall, a city" />
               </div>
             </div>
+
             <Button type="submit" className="mt-10 w-full">
-              Continue to delivery
+              Continue
             </Button>
-            <p className="mt-4 text-center text-[0.6875rem] text-graphite/60">
-              Demonstration flow — no payment is taken.
+            <p className="u-micro mt-5 text-center text-chalk/60">
+              A demonstration flow. Nothing is charged and nothing is sent.
             </p>
           </form>
         )}
 
         {step === 1 && (
-          <form onSubmit={next}>
-            <DialogTitle className="font-display text-2xl text-ink">
-              Delivery
+          <form onSubmit={advance}>
+            <DialogTitle className="u-h3 mt-5 text-chalk">
+              Where should it travel?
             </DialogTitle>
-            <DialogDescription className="mt-3 text-sm leading-relaxed text-graphite">
-              Every original travels in a custom crate, insured and tracked.
-              Delivery is complimentary worldwide.
+            <DialogDescription className="u-micro mt-3">
+              Every original goes in a crate built for it, insured and tracked.
+              Delivery is included, wherever you are.
             </DialogDescription>
-            <div className="mt-8 space-y-6">
+
+            <div className="mt-10 space-y-7">
               <div>
                 <Label htmlFor="acq-address">Address</Label>
-                <Input id="acq-address" required placeholder="Street address" autoComplete="street-address" />
+                <Input
+                  id="acq-address"
+                  required
+                  autoComplete="street-address"
+                  placeholder="Street"
+                />
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-7">
                 <div>
                   <Label htmlFor="acq-city">City</Label>
-                  <Input id="acq-city" required placeholder="City" autoComplete="address-level2" />
+                  <Input
+                    id="acq-city"
+                    required
+                    autoComplete="address-level2"
+                    placeholder="City"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="acq-country">Country</Label>
-                  <Input id="acq-country" required placeholder="Country" autoComplete="country-name" />
+                  <Input
+                    id="acq-country"
+                    required
+                    autoComplete="country-name"
+                    placeholder="Country"
+                  />
                 </div>
               </div>
             </div>
-            <div className="mt-10 flex items-center justify-between border-t border-stone pt-6 text-sm">
-              <span className="text-graphite">Total</span>
-              <span className="font-display text-xl text-ink">
-                {formatPrice(artwork.price)}
-              </span>
+
+            <div className="mt-10 flex items-baseline justify-between border-t border-chalk/10 pt-7">
+              <span className="u-label">Total</span>
+              <span className="u-micro text-chalk">{formatPrice(artwork.price)}</span>
             </div>
-            <Button type="submit" className="mt-6 w-full">
-              Confirm acquisition
+
+            <Button type="submit" variant="solid" className="mt-7 w-full">
+              Confirm
             </Button>
-            <p className="mt-4 text-center text-[0.6875rem] text-graphite/60">
-              Demonstration flow — no payment is taken.
+            <p className="u-micro mt-5 text-center text-chalk/60">
+              A demonstration flow. Nothing is charged and nothing is sent.
             </p>
           </form>
         )}
 
         {step === 2 && (
-          <div className="text-center">
-            <div
-              className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-ink"
+          <div className="py-4">
+            <span
+              className="mt-6 flex h-12 w-12 items-center justify-center border border-bone text-bone"
               aria-hidden
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M4 12.5 9.5 18 20 6.5" />
-              </svg>
-            </div>
-            <DialogTitle className="mt-6 font-display text-2xl text-ink">
-              Thank you
+              <Check className="h-5 w-5" />
+            </span>
+            <DialogTitle className="u-h3 mt-8 text-chalk">
+              {artwork.title} is held for you.
             </DialogTitle>
-            <DialogDescription className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-graphite">
-              “{artwork.title}” is reserved for you. In a live gallery, a
-              confirmation and shipping timeline would now arrive by email —
-              this is a demonstration, so nothing has been charged or sent.
+            <DialogDescription className="u-body mt-5">
+              In a working studio, June would now write to you herself with the
+              framing choices and a shipping date. This is a demonstration, so
+              nothing has been charged and no message has been sent.
             </DialogDescription>
             <DialogClose asChild>
-              <Button variant="outline" className="mt-10">
-                Return to the gallery
-              </Button>
+              <Button className="mt-10">Back to the wall</Button>
             </DialogClose>
           </div>
         )}

@@ -72,9 +72,16 @@ export interface FaqItem {
   answer: string;
 }
 
-/** Build an Unsplash URL. `mono` desaturates so photography reads as chalk/graphite. */
-const u = (id: string, mono = false) =>
-  `https://images.unsplash.com/${id}?q=80&w=1800&auto=format&fit=crop${mono ? "&sat=-100" : ""}`;
+/**
+ * Build an Unsplash URL.
+ *
+ * Every image is desaturated at the CDN, not in the browser: the palette is
+ * three colours and photography is not allowed to introduce a fourth, and
+ * doing it server-side costs the visitor nothing. The second argument is
+ * retained so existing call sites keep working; it no longer varies anything.
+ */
+const u = (id: string, _mono = true) =>
+  `https://images.unsplash.com/${id}?q=80&w=1800&auto=format&fit=crop&sat=-100`;
 
 /* ------------------------------------------------------------------ */
 /* Artworks                                                            */
@@ -662,6 +669,17 @@ export function getJournalPost(slug: string): JournalPost | undefined {
 
 /* ------------------------------------------------------------------ */
 /* Testimonials                                                        */
+/*                                                                     */
+/* !! NOT RENDERED ANYWHERE, AND MUST NOT BE.                          */
+/*                                                                     */
+/* These quotes and the people attributed to them were written as demo */
+/* filler in an earlier build. They are invented. Presenting invented  */
+/* praise as real collector feedback would be a false endorsement, so  */
+/* the section that displayed them has been removed from the site.     */
+/*                                                                     */
+/* TODO: delete this array, or replace it wholesale with quotes June   */
+/* has actually received and has permission to publish — then re-add   */
+/* the section. Do not ship it as it stands.                           */
 /* ------------------------------------------------------------------ */
 
 export const testimonials: Testimonial[] = [
@@ -772,6 +790,13 @@ export const commissionSteps = [
 
 /* ------------------------------------------------------------------ */
 /* Contact / FAQ                                                       */
+/*                                                                     */
+/* TODO — every operational specific below is placeholder and needs    */
+/* June's confirmation before launch: delivery windows, the returns    */
+/* period, commission timelines, framing materials and glazing spec.   */
+/* They are written as reasonable defaults for a studio of this kind,  */
+/* not as anything she has agreed to. Nothing here states a figure     */
+/* about demand, sales or reputation, and nothing should be added.     */
 /* ------------------------------------------------------------------ */
 
 export const faqs: FaqItem[] = [
@@ -797,7 +822,7 @@ export const faqs: FaqItem[] = [
     _type: "faqItem",
     question: "How long does a commission take?",
     answer:
-      "From approved sketch to finished piece, most commissions take four to ten weeks depending on scale and medium; large chalk canvases can take longer. The current waitlist is roughly two months, and I take on a limited number of commissions each season so that nothing is rushed.",
+      "From approved sketch to finished piece, most commissions take four to ten weeks depending on scale and medium; large chalk canvases can take longer. Only a limited number of commissions are taken each season so that nothing is rushed — write to the studio and June will tell you when she could start.",
   },
   {
     _type: "faqItem",

@@ -1,202 +1,180 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  artworks,
-  featuredArtworks,
-  latestArtworks,
-  instagramPosts,
-  testimonials,
-  site,
-} from "@/lib/data";
+import { artworks, latestArtworks, instagramPosts, site } from "@/lib/data";
 import { Hero } from "@/components/hero";
-import { Section, SectionHeading, Eyebrow } from "@/components/section";
-import { ArtworkCard } from "@/components/artwork-card";
-import { NewsletterForm } from "@/components/newsletter-form";
-import { CollectionStrip } from "@/components/collection-strip";
+import { Section, Shell, Eyebrow, RoomTitle } from "@/components/section";
+import { Wall } from "@/components/wall";
+import { Lit } from "@/components/light";
+import { ArrowRight } from "@/components/brand/icons";
 
 export default function HomePage() {
-  const hero = artworks.find((a) => a.slug === "stillness-in-white") ?? artworks[0];
-  const featured = featuredArtworks.filter((a) => a.slug !== hero.slug).slice(0, 6);
+  const hero =
+    artworks.find((a) => a.slug === "stillness-in-white") ?? artworks[0];
+  const hung = artworks.filter((a) => a.slug !== hero.slug).slice(0, 7);
 
   return (
     <>
       <Hero artwork={hero} />
 
-      {/* Featured Originals */}
-      <Section>
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Available Originals"
-            title="Works currently in the studio"
-          />
+      {/* The wall proper */}
+      <Section wide className="pt-28 sm:pt-40">
+        <div className="flex flex-wrap items-end justify-between gap-8">
+          <RoomTitle eyebrow="The Wall" title="Hung at the size they are">
+            Works are shown here at true relative scale, centres aligned on a
+            single hang line — the way they would meet you in a room, rather
+            than cropped to a matching grid.
+          </RoomTitle>
           <Link
-            href="/originals"
-            data-reveal
-            className="border-b border-ink pb-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-ink transition-opacity hover:opacity-60"
+            href="/gallery"
+            className="u-label link-hair inline-flex items-center gap-2 !text-chalk"
+            data-lift="3"
           >
-            All Originals
+            The whole wall
+            <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
-        <div
-          className="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3"
-          data-reveal-group
-        >
-          {featured.map((artwork, i) => (
-            <ArtworkCard key={artwork.slug} artwork={artwork} reveal priority={i < 3} />
-          ))}
+
+        <div className="mt-28 sm:mt-36">
+          <Wall artworks={hung} priorityCount={2} />
         </div>
       </Section>
 
-      {/* Artist introduction */}
-      <Section tone="ivory">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-          <div className="relative aspect-[4/5]" data-reveal-image>
-            <Image
-              src={site.aboutImages.portrait.src}
-              alt={site.aboutImages.portrait.alt}
-              fill
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="object-cover"
-            />
+      {/* The studio */}
+      <Section>
+        <div className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-24">
+          <div data-lift="0">
+            <Lit className="aspect-[4/5] w-full">
+              <Image
+                src={site.aboutImages.portrait.src}
+                alt={site.aboutImages.portrait.alt}
+                fill
+                sizes="(min-width: 64rem) 42vw, 92vw"
+                className="object-cover"
+              />
+            </Lit>
           </div>
-          <div data-reveal-group>
-            <div data-reveal>
-              <Eyebrow>The Artist</Eyebrow>
-            </div>
-            <h2 className="mt-4 text-3xl leading-[1.12] sm:text-4xl" data-reveal>
-              A decade of drawing in the dark
+          <div>
+            <Eyebrow data-lift="1">The Studio</Eyebrow>
+            <h2 className="u-h2 mt-6 text-chalk" data-lift="2">
+              She draws the light, and leaves the dark alone.
             </h2>
-            <p className="mt-6 max-w-lg text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              June works alone in a converted grain store with one north-facing
-              window, in the mediums that forgive the least — chalk, charcoal,
-              graphite and ink. Her signature works reverse the drawing itself:
-              white chalk on black canvas, so that every mark is a mark of
-              light.
-            </p>
-            <p className="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-graphite" data-reveal>
-              Each original leaves the studio framed behind museum glass, with
-              a signed Certificate of Authenticity.
-            </p>
+            <div className="u-body u-measure mt-8 space-y-5" data-lift="3">
+              <p>
+                Most drawing adds darkness to a white page. June works the
+                other way: white chalk onto black canvas, so the canvas begins
+                as night and every mark she makes is a mark of light.
+              </p>
+              <p>
+                Alongside the chalk work are graphite, pencil, charcoal and
+                ink — the quiet mediums, the ones that forgive nothing. Each
+                piece is one of one, drawn by hand, and leaves the studio
+                framed with its certificate.
+              </p>
+            </div>
             <Link
               href="/about"
-              data-reveal
-              className="mt-8 inline-block border-b border-ink pb-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-ink transition-opacity hover:opacity-60"
+              className="u-label link-hair mt-9 inline-flex items-center gap-2 !text-chalk"
+              data-lift="4"
             >
-              About June
+              Inside the studio
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
       </Section>
 
-      {/* Latest collection — pinned horizontal gallery walk */}
-      <CollectionStrip artworks={latestArtworks} />
-
-      {/* Commission teaser — full-bleed parallax interior */}
-      <section className="relative overflow-hidden py-32 text-paper sm:py-44">
-        <div className="absolute -inset-y-[12%] inset-x-0" data-parallax="10">
-          <Image
-            src={site.aboutImages.interior.src}
-            alt={site.aboutImages.interior.alt}
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-ink/70" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-5 text-center sm:px-8">
-          <div className="mx-auto max-w-2xl" data-reveal-group>
-            <div data-reveal>
-              <Eyebrow className="!text-stone">Commissions</Eyebrow>
-            </div>
-            <h2 className="mt-4 text-3xl leading-[1.15] sm:text-4xl lg:text-[2.75rem]" data-reveal>
-              The most important drawings are the ones that don’t exist yet.
-            </h2>
-            <p className="mt-6 text-[0.9375rem] leading-relaxed text-stone" data-reveal>
-              Portraits, wildlife, companions, places that matter. A limited
+      {/* Commission — one line, no cards */}
+      <section className="relative py-28 sm:py-44">
+        <Shell>
+          <div className="mx-auto max-w-4xl text-center">
+            <Eyebrow data-lift="0">Commissions</Eyebrow>
+            <p className="u-h1 mt-8 text-chalk" data-lift="1">
+              The drawings that matter most are the ones that don’t exist yet.
+            </p>
+            <p className="u-body mx-auto mt-8 max-w-xl" data-lift="2">
+              Portraits, wildlife, companions, places that are gone. A limited
               number of commissions are taken each season.
             </p>
-            <div data-reveal>
+            <div data-lift="3">
               <Link
                 href="/commissions"
-                className="mt-10 inline-flex items-center border border-paper/70 px-7 py-3.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-paper transition-colors duration-300 hover:bg-paper hover:text-ink"
+                className="u-label link-hair mt-10 inline-flex items-center gap-2 !text-chalk"
               >
-                Begin a Commission
+                Begin a commission
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
-        </div>
+        </Shell>
       </section>
 
-      {/* Testimonials */}
-      <Section tone="ivory">
-        <SectionHeading eyebrow="From Collectors" title="Words sent back to the studio" />
-        <div className="mt-14 grid gap-10 lg:grid-cols-3" data-reveal-group>
-          {testimonials.map((t) => (
-            <figure key={t.name} className="flex flex-col" data-reveal>
-              <blockquote className="font-display text-lg leading-relaxed text-ink">
-                “{t.quote}”
-              </blockquote>
-              <figcaption className="mt-6 border-t border-stone pt-4 text-xs tracking-wide text-graphite">
-                <span className="font-medium text-ink">{t.name}</span> · {t.context}
-              </figcaption>
-            </figure>
+      {/* Recent work — a quiet strip, in the order it left the easel */}
+      <Section wide>
+        <RoomTitle eyebrow="Lately" title="Most recently off the easel" />
+        <ul className="mt-16 grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-6">
+          {latestArtworks.map((artwork, i) => (
+            <li key={artwork.slug} data-lift={i}>
+              <Link href={`/gallery/${artwork.slug}`} className="group block">
+                <Lit className="aspect-[3/4] w-full">
+                  <Image
+                    src={artwork.image.src}
+                    alt={artwork.image.alt}
+                    fill
+                    sizes="(min-width: 64rem) 15vw, (min-width: 40rem) 30vw, 45vw"
+                    className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                  />
+                </Lit>
+                <p className="u-work mt-4 text-base text-chalk">{artwork.title}</p>
+                <p className="u-micro text-chalk/60">{artwork.year}</p>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </Section>
 
-      {/* Newsletter */}
-      <Section>
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-20">
-          <SectionHeading
-            eyebrow="The Studio Letter"
-            title="First viewing of every new original"
-          />
-          <div data-reveal>
-            <p className="mb-6 max-w-md text-[0.9375rem] leading-relaxed text-graphite">
-              Collectors on the list see new work before it reaches the
-              gallery, along with occasional letters from the studio. A few a
-              year — nothing more.
-            </p>
-            <NewsletterForm />
-          </div>
-        </div>
-      </Section>
-
-      {/* Instagram */}
-      <Section className="pt-0">
+      {/* Contact sheet — the studio diary, as a strip of film rather than a
+          social grid */}
+      <Section wide className="pt-0">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading eyebrow="Studio Diary" title="@junes.studio" />
+          <RoomTitle eyebrow="Studio Diary" title="Contact sheet" />
           <a
             href={site.instagram}
             target="_blank"
             rel="noreferrer"
-            data-reveal
-            className="border-b border-ink pb-1 text-[0.75rem] font-medium uppercase tracking-[0.18em] text-ink transition-opacity hover:opacity-60"
+            className="u-label link-hair inline-flex items-center gap-2 !text-chalk"
+            data-lift="3"
           >
-            Follow Along
+            Follow the studio
+            <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
-        <div className="mt-12 grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-6" data-reveal-group>
+        {/* The scroller is focusable so the strip can be reached from the
+            keyboard — its children are images, not links, so nothing inside
+            would otherwise take focus. The list itself keeps list semantics. */}
+        <div
+          tabIndex={0}
+          role="group"
+          aria-label="Studio contact sheet — scroll for more frames"
+          className="no-scrollbar mt-14 overflow-x-auto border-y border-chalk/10 py-3"
+        >
+        <ul className="flex snap-x snap-proximity gap-3">
           {instagramPosts.map((post, i) => (
-            <a
-              key={i}
-              href={site.instagram}
-              target="_blank"
-              rel="noreferrer"
-              className="artwork-card group block"
-              data-reveal
-            >
-              <div className="artwork-frame relative aspect-square">
+            <li key={i} className="w-40 shrink-0 snap-start sm:w-52">
+              <Lit className="aspect-square w-full">
                 <Image
                   src={post.src}
                   alt={post.alt}
                   fill
-                  sizes="(min-width: 1024px) 15vw, 33vw"
+                  sizes="13rem"
                   className="object-cover"
                 />
-              </div>
-            </a>
+              </Lit>
+              <p className="u-micro mt-2 text-chalk/55 tabular-nums">
+                {String(i + 1).padStart(2, "0")}
+              </p>
+            </li>
           ))}
+        </ul>
         </div>
       </Section>
     </>
